@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Programme Complet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FDFAF5;
+    --sage: #7A9E7E;
+    --sage-light: #A8C5AC;
+    --terracotta: #C4714A;
+    --terracotta-light: #E8A882;
+    --charcoal: #2A2A2A;
+    --mid: #5A5A5A;
+    --light-mid: #9A9A9A;
+    --gold: #C9A84C;
+    --blush: #E8C4B8;
+    --border: rgba(42,42,42,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    flex: none;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  nav button.active {
+    color: var(--charcoal);
+    border-bottom-color: var(--terracotta);
+  }
+  nav button:hover { color: var(--charcoal); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 24px 20px 80px; max-width: 680px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* HEADER */
+  .hero {
+    text-align: center;
+    padding: 40px 20px 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .hero p {
+    margin-top: 10px;
+    color: var(--mid);
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  /* STATS CARD */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--terracotta);
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+    margin-top: 4px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 6px;
+  }
+  .card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 14px 0 8px;
+    color: var(--mid);
+  }
+
+  /* WEEK GRID */
+  .week-grid { display: flex; flex-direction: column; gap: 8px; }
+  .day-row {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--cream);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .day-row:hover { background: #EDE8DF; }
+  .day-row.active-day { background: var(--terracotta); }
+  .day-row.active-day .day-name, .day-row.active-day .day-workout { color: white; }
+  .day-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .day-workout { font-size: 15px; font-weight: 600; }
+  .day-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    background: var(--terracotta-light);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 8px;
+  }
+
+  /* WORKOUT DETAIL */
+  .workout-detail {
+    display: none;
+    margin-top: 12px;
+    padding: 16px;
+    background: var(--cream);
+    border-radius: 12px;
+    border-left: 3px solid var(--terracotta);
+  }
+  .workout-detail.open { display: block; }
+  .exercise-list { list-style: none; padding: 0; }
+  .exercise-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .exercise-list li:last-child { border-bottom: none; }
+  .sets-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  /* CHECKLIST */
+  .check-list { list-style: none; }
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-ico {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+  .ico-red { background: #FDECEA; color: #C0392B; }
+  .ico-green { background: #E8F5E9; color: var(--sage); }
+  .ico-gold { background: #FFF8E1; color: var(--gold); }
+
+  /* FOOD */
+  .food-category {
+    margin-bottom: 20px;
+  }
+  .food-cat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .fc-protein { background: #FDECEA; color: #B03030; }
+  .fc-carb { background: #E8F5E9; color: #2E7D32; }
+  .fc-fat { background: #FFF8E1; color: #B8860B; }
+  .fc-super { background: #F3E5F5; color: #6A1B9A; }
+  .food-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .food-chip {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  /* MACRO CALC */
+  .calc-block {
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .calc-block h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--cream);
+  }
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .calc-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--terracotta-light);
+  }
+  .calc-sub { font-size: 12px; opacity: 0.6; font-style: italic; }
+
+  /* INPUT */
+  .input-group {
+    margin-bottom: 16px;
+  }
+  .input-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .input-group input, .input-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--warm-white);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--charcoal);
+    outline: none;
+  }
+  .input-group input:focus { border-color: var(--terracotta); }
+
+  /* BTN */
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--terracotta); color: white; }
+  .btn-primary:hover { background: #B05E38; }
+  .btn-full { width: 100%; display: block; text-align: center; margin-top: 8px; }
+
+  /* SUPPLEMENTS */
+  .supp-time {
+    margin-bottom: 20px;
+  }
+  .supp-header {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .supp-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .dot-morning { background: var(--gold); }
+  .dot-gut { background: var(--sage); }
+  .dot-evening { background: #7986CB; }
+  .supp-pill {
+    display: inline-block;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 4px;
+    font-size: 13px;
+  }
+
+  /* LIFESTYLE */
+  .lifestyle-item {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--sage);
+    background: var(--warm-white);
+  }
+  .lifestyle-item h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .lifestyle-item p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  /* TRACKER */
+  .tracker-day {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .tracker-day h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .habit-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .habit-check:last-child { border-bottom: none; }
+  .habit-box {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .habit-box.checked {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+  .habit-label { font-size: 14px; }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--cream);
+    border-radius: 20px;
+    height: 8px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: var(--sage);
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--light-mid);
+    margin-top: 4px;
+  }
+
+  /* ESCRIME */
+  .escrime-card {
+    background: linear-gradient(135deg, #2A2A2A, #3D3D3D);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .escrime-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .escrime-card p { color: rgba(245,240,232,0.75); font-size: 14px; line-height: 1.6; }
+
+  /* BMI */
+  .bmi-indicator {
+    position: relative;
+    height: 12px;
+    background: linear-gradient(to right, #42A5F5, #66BB6A, #FFA726, #EF5350);
+    border-radius: 20px;
+    margin: 12px 0;
+    overflow: visible;
+  }
+  .bmi-needle {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: var(--charcoal);
+    border-radius: 2px;
+    top: -4px;
+    transform: translateX(-50%);
+    transition: left 0.5s ease;
+  }
+
+  .note {
+    font-size: 13px;
+    color: var(--mid);
+    font-style: italic;
+    padding: 10px 14px;
+    background: #FFF8E1;
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+    margin-top: 10px;
+  }
+
+  /* SUIVI */
+  .measure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .measure-field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .measure-field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--warm-white);
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: var(--charcoal);
+    outline: none;
+    text-align: center;
+  }
+  .measure-field input:focus { border-color: var(--terracotta); }
+
+  .history-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .history-entry:last-child { border-bottom: none; }
+  .history-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--mid);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .history-data {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .history-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 8px;
+    color: var(--charcoal);
+  }
+  .history-chip.highlight { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+  .del-btn {
+    background: none;
+    border: none;
+    color: var(--light-mid);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+  .del-btn:hover { color: var(--terracotta); }
+
+  /* CYCLE */
+  .cycle-phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .phase-card {
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+  .phase-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .phase-card p { font-size: 12px; color: var(--mid); line-height: 1.4; }
+  .phase-menstrual { background: #FFF0F0; }
+  .phase-follicular { background: #FFF8E1; }
+  .phase-ovulation { background: #E8F5E9; }
+  .phase-luteal { background: #F3E5F5; }
+
+  .cycle-indicator {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .cycle-indicator h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .phase-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .pb-menstrual { background: #FDECEA; color: #C62828; }
+  .pb-follicular { background: #FFF8E1; color: #F57F17; }
+  .pb-ovulation { background: #E8F5E9; color: #2E7D32; }
+  .pb-luteal { background: #EDE7F6; color: #4527A0; }
+
+  .trend-up { color: #E53935; font-size: 11px; }
+  .trend-down { color: var(--sage); font-size: 11px; }
+  .trend-eq { color: var(--mid); font-size: 11px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeIn 0.25s ease; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="active" onclick="show('accueil')">🏠 Accueil</button>
+  <button onclick="show('sport')">💪 Sport</button>
+  <button onclick="show('nutrition')">🥗 Nutrition</button>
+  <button onclick="show('complements')">💊 Compléments</button>
+  <button onclick="show('lifestyle')">🌿 Lifestyle</button>
+  <button onclick="show('tracker')">✅ Tracker</button>
+  <button onclick="show('suivi')">📊 Suivi</button>
+</nav>
+
+<!-- ACCUEIL -->
+<div id="accueil" class="section active">
+  <div class="hero">
+    <div class="hero-tag">Programme personnalisé</div>
+    <h1>Ton Plan<br>Complet</h1>
+    <p>Hormones · Corps · Performance</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val">1m63</div>
+      <div class="stat-label">Taille</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">66kg</div>
+      <div class="stat-label">Poids</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="bmi-val">24.8</div>
+      <div class="stat-label">IMC</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Ton IMC</div>
+    <h2>Zone de référence</h2>
+    <div class="bmi-indicator">
+      <div class="bmi-needle" id="bmi-needle" style="left: 55%"></div>
+    </div>
+    <div style="display:flex; justify-content: space-between; font-family:'DM Mono',monospace; font-size:9px; color:var(--light-mid);">
+      <span>Sous-poids</span><span>Normal</span><span>Surpoids</span><span>Obèse</span>
+    </div>
+    <p class="note">IMC 24.8 — dans la zone normale. Objectif : recomposition corporelle (prise de muscle + perte de graisse) plutôt que perte de poids pure.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Objectif principal</div>
+    <h2>Recomposition & Hormones</h2>
+    <ul class="check-list">
+      <li><span class="check-ico ico-green">✓</span>Sculpter et tonifier sans perdre de muscle</li>
+      <li><span class="check-ico ico-green">✓</span>Rééquilibrer les hormones via l'alimentation</li>
+      <li><span class="check-ico ico-green">✓</span>Améliorer la santé intestinale</li>
+      <li><span class="check-ico ico-green">✓</span>Optimiser les performances en escrime</li>
+      <li><span class="check-ico ico-green">✓</span>10 000–12 000 pas par jour</li>
+    </ul>
+  </div>
+
+  <div class="escrime-card">
+    <h2>⚔️ Jours d'escrime</h2>
+    <p>Quand tu as escrime, remplace le Lower Body 2 (jeudi) ou adapte. L'escrime = cardio + travail jambes intense. Ne t'entraîne pas lourd les jambes le jour d'avant. Hydrate-toi bien et mange des glucides autour de la séance.</p>
+  </div>
+</div>
+
+<!-- SPORT -->
+<div id="sport" class="section">
+  <div class="hero">
+    <div class="hero-tag">Programme hebdomadaire</div>
+    <h1>Sport</h1>
+    <p>5 séances · 10–12k pas/jour</p>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Vue d'ensemble</div>
+    <h2>Weekly Split</h2>
+    <div class="week-grid">
+
+      <div class="day-row" onclick="toggleDay('mon')">
+        <span class="day-name">Lundi</span>
+        <span class="day-workout">Lower Body 1 — Fessiers<span class="day-badge">45 min</span></span>
+      </div>
+      <div class="workout-detail" id="detail-mon">
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin-bottom:10px;color:var(--sage)">ÉCHAUFFEMENT</p>
+        <ul class="check-list">
+          <li><span class="check-ico ico-gold">→</span>10 min marche inclinée tapis</li>
+          <li><span class="check-ico ico-gold">→</span>Activation fessiers avec élastique</li>
+        </ul>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin:12px 0 8px;color:var(--terracotta)">ENTRAÎNEMENT</p>
+        <ul class="exercise-list">
+          <li>Hip Thrust barre <span class="sets-tag">4×10</span></li>
+          <li>Romanian Deadlift <span class="sets-tag">4×10</span></li>
+          <li>Cable Kickbacks <span class="sets-tag">4×15 chaque</span></li>
+          <li>Glute Bridge avec pause <span class="sets-tag">3×20</span></li>
+          <li>Machine Abducteur <span class="sets-tag">4×20</span></li>
+        </ul>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin:12px 0 8px;color:var(--mid)">CORE</p>
+        <ul class="check-list">
+          <li><span class="check-ico ico-green">✓</span>Stomach Vacuums — 5 tours</li>
+          <li><span class="check-ico ico-green">✓</span>Dead Bug — 3×15</li>
+        </ul>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('tue')">
+        <span class="day-name">Mardi</span>
+        <span class="day-workout">Upper Body 1 — Taille fine<span class="day-badge">45 min</span></span>
+      </div>
+      <div class="workout-detail" id="detail-tue">
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin-bottom:10px;color:var(--sage)">CONSEIL</p>
+        <p style="font-size:13px;color:var(--mid);margin-bottom:12px;">Dos + épaules larges = taille visuellement plus fine. Pas besoin de faire des dizaines de crunches !</p>
+        <ul class="exercise-list">
+          <li>Lat Pulldown <span class="sets-tag">4×12</span></li>
+          <li>Seated Row <span class="sets-tag">4×12</span></li>
+          <li>Dumbbell Shoulder Press <span class="sets-tag">3×12</span></li>
+          <li>Lateral Raises <span class="sets-tag">4×15</span></li>
+          <li>Face Pulls <span class="sets-tag">3×15</span></li>
+        </ul>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin:12px 0 8px;color:var(--mid)">CORE</p>
+        <ul class="check-list">
+          <li><span class="check-ico ico-green">✓</span>Stomach Vacuums</li>
+          <li><span class="check-ico ico-green">✓</span>Plank 3×45 sec</li>
+        </ul>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('wed')">
+        <span class="day-name">Mercredi</span>
+        <span class="day-workout">Cardio Zone 2 + Core<span class="day-badge">40 min</span></span>
+      </div>
+      <div class="workout-detail" id="detail-wed">
+        <ul class="exercise-list">
+          <li>Marche inclinée tapis <span class="sets-tag">30 min</span></li>
+          <li>Hanging Knee Raises <span class="sets-tag">3×15</span></li>
+          <li>Plank <span class="sets-tag">3×45 sec</span></li>
+          <li>Heel Taps <span class="sets-tag">3×25</span></li>
+          <li>Vacuums <span class="sets-tag">5 tours</span></li>
+        </ul>
+        <p class="note">Option : ajouter un flow Pilates de 20 min</p>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('thu')">
+        <span class="day-name">Jeudi</span>
+        <span class="day-workout">Lower Body 2 — Shape<span class="day-badge">45 min</span></span>
+      </div>
+      <div class="workout-detail" id="detail-thu">
+        <p class="note" style="margin-bottom:12px;">⚔️ Si tu as escrime ce soir → fais une version allégée (juste hip thrust + kickbacks) ou repose-toi.</p>
+        <ul class="exercise-list">
+          <li>Smith Machine Hip Thrust <span class="sets-tag">4×12</span></li>
+          <li>Bulgarian Split Squat (penche en avant) <span class="sets-tag">3×10 chaque</span></li>
+          <li>Cable Side Kickbacks <span class="sets-tag">4×15</span></li>
+          <li>Frog Pumps <span class="sets-tag">3×30</span></li>
+          <li>Banded Burnout <span class="sets-tag">3 tours</span></li>
+        </ul>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin:12px 0 6px;color:var(--mid)">FINISHER</p>
+        <p style="font-size:14px;">Stairmaster rythme lent — 15 min</p>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('fri')">
+        <span class="day-name">Vendredi</span>
+        <span class="day-workout">Upper Body 2 — Bras & Posture<span class="day-badge">50 min</span></span>
+      </div>
+      <div class="workout-detail" id="detail-fri">
+        <ul class="exercise-list">
+          <li>Assisted Pullups / Pulldown <span class="sets-tag">4×10</span></li>
+          <li>Single Arm Row <span class="sets-tag">3×12 chaque</span></li>
+          <li>Arnold Press <span class="sets-tag">3×12</span></li>
+          <li>Lateral Raises <span class="sets-tag">4×15</span></li>
+          <li>Tricep Rope Pushdown <span class="sets-tag">3×15</span></li>
+          <li>Hammer Curls <span class="sets-tag">3×12</span></li>
+          <li>Rear Delt Fly <span class="sets-tag">3×15</span></li>
+        </ul>
+        <p style="font-family:'DM Mono',monospace;font-size:10px;margin:12px 0 8px;color:var(--mid)">CORE</p>
+        <ul class="check-list">
+          <li><span class="check-ico ico-green">✓</span>Dead Bug 3×15</li>
+          <li><span class="check-ico ico-green">✓</span>Vacuums ×5</li>
+        </ul>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('sat')">
+        <span class="day-name">Samedi</span>
+        <span class="day-workout">Pilates / Yoga</span>
+      </div>
+      <div class="workout-detail" id="detail-sat">
+        <p style="font-size:14px;color:var(--mid);">Séance douce : flexibilité, mobilité, respiration. Parfait pour récupérer et travailler la posture. Idéal aussi pour le gainage profond utile en escrime.</p>
+      </div>
+
+      <div class="day-row" onclick="toggleDay('sun')">
+        <span class="day-name">Dimanche</span>
+        <span class="day-workout">Reset total 🧖‍♀️</span>
+      </div>
+      <div class="workout-detail" id="detail-sun">
+        <ul class="check-list">
+          <li><span class="check-ico ico-gold">→</span>Sauna si possible</li>
+          <li><span class="check-ico ico-gold">→</span>Marche légère (atteindre ses pas)</li>
+          <li><span class="check-ico ico-gold">→</span>Brossage lymphatique</li>
+          <li><span class="check-ico ico-gold">→</span>Récupération mentale</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="escrime-card">
+    <h2>⚔️ Semaines avec escrime</h2>
+    <p>Escrime = cardio intense + jambes. Règle : ne jamais faire de heavy lower body la veille d'une séance d'escrime. Si tu as cours le jeudi soir → fais une séance upper body légère le jeudi ou repose-toi. Si escrime le weekend → remplace Pilates/Yoga ce jour-là.</p>
+  </div>
+</div>
+
+<!-- NUTRITION -->
+<div id="nutrition" class="section">
+  <div class="hero">
+    <div class="hero-tag">Alimentation</div>
+    <h1>Nutrition</h1>
+    <p>Hormones · Intestin · Énergie</p>
+  </div>
+
+  <!-- CALCUL MACROS -->
+  <div class="calc-block">
+    <h2>📊 Tes Macros (calculées)</h2>
+    <div class="calc-row">
+      <span class="calc-label">Métabolisme de base (MB)</span>
+      <span class="calc-val">~1 465 <span class="calc-sub">kcal</span></span>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">TDEE (activité modérée)</span>
+      <span class="calc-val">~2 025 <span class="calc-sub">kcal</span></span>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Objectif (déficit 15%)</span>
+      <span class="calc-val">~1 720 <span class="calc-sub">kcal/j</span></span>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Protéines (0.9g/lb)</span>
+      <span class="calc-val">~130g <span class="calc-sub">/jour</span></span>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Glucides</span>
+      <span class="calc-val">~160g <span class="calc-sub">/jour</span></span>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Lipides</span>
+      <span class="calc-val">~55g <span class="calc-sub">/jour</span></span>
+    </div>
+    <p style="font-size:12px;opacity:0.6;margin-top:12px;font-style:italic;">Jours d'escrime : +200–300 kcal, surtout en glucides</p>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Timing des repas</div>
+    <h2>Comment manger</h2>
+    <ul class="check-list">
+      <li><span class="check-ico ico-green">✓</span>Premier repas dans l'heure après le réveil</li>
+      <li><span class="check-ico ico-green">✓</span>Fermer la fenêtre alimentaire à 19–20h</li>
+      <li><span class="check-ico ico-green">✓</span>3 repas + 1 collation optionnelle</li>
+      <li><span class="check-ico ico-green">✓</span>Glucides autour des entraînements (avant/après)</li>
+      <li><span class="check-ico ico-red">✗</span>Ne jamais s'entraîner à jeun</li>
+      <li><span class="check-ico ico-red">✗</span>Ne pas manger tard le soir</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Aliments recommandés</div>
+    <h2>Foods to Eat</h2>
+
+    <div class="food-category">
+      <span class="food-cat-title fc-protein">🥩 Protéines</span>
+      <div class="food-items">
+        <span class="food-chip">Œufs fermiers</span>
+        <span class="food-chip">Saumon sauvage</span>
+        <span class="food-chip">Sardines</span>
+        <span class="food-chip">Bœuf herbe</span>
+        <span class="food-chip">Bison</span>
+        <span class="food-chip">Poulet bio</span>
+        <span class="food-chip">Dinde bio</span>
+      </div>
+    </div>
+
+    <div class="food-category">
+      <span class="food-cat-title fc-carb">🥦 Glucides gut-friendly</span>
+      <div class="food-items">
+        <span class="food-chip">Patate douce violette</span>
+        <span class="food-chip">Riz blanc</span>
+        <span class="food-chip">Myrtilles</span>
+        <span class="food-chip">Framboises</span>
+        <span class="food-chip">Banane légèrement verte</span>
+        <span class="food-chip">Courge</span>
+        <span class="food-chip">Courgette</span>
+      </div>
+    </div>
+
+    <div class="food-category">
+      <span class="food-cat-title fc-fat">🥑 Lipides hormonaux</span>
+      <div class="food-items">
+        <span class="food-chip">Avocat</span>
+        <span class="food-chip">Huile d'olive froide</span>
+        <span class="food-chip">Noix du Brésil</span>
+        <span class="food-chip">Graines de lin moulues</span>
+        <span class="food-chip">Poisson gras 3–4×/sem</span>
+      </div>
+    </div>
+
+    <div class="food-category">
+      <span class="food-cat-title fc-super">✨ Superstars intestin & hormones</span>
+      <div class="food-items">
+        <span class="food-chip">Choucroute</span>
+        <span class="food-chip">Kimchi</span>
+        <span class="food-chip">Kéfir quotidien</span>
+        <span class="food-chip">Bouillon d'os</span>
+        <span class="food-chip">Roquette</span>
+        <span class="food-chip">Épinards</span>
+        <span class="food-chip">Kale</span>
+        <span class="food-chip">Brocoli</span>
+        <span class="food-chip">Chou-fleur</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">À éviter</div>
+    <h2>Triggers à supprimer</h2>
+    <h3>🔥 Inflammatoires</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-red">✗</span>Gluten (surtout en grande quantité)</li>
+      <li><span class="check-ico ico-red">✗</span>Produits laitiers conventionnels</li>
+      <li><span class="check-ico ico-red">✗</span>Huiles de graines raffinées</li>
+      <li><span class="check-ico ico-red">✗</span>Snacks ultra-transformés & fast food</li>
+      <li><span class="check-ico ico-red">✗</span>Édulcorants artificiels</li>
+    </ul>
+    <h3>💧 Perturbateurs hormonaux</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-red">✗</span>Alcool (surtout vin & bière)</li>
+      <li><span class="check-ico ico-red">✗</span>Soja conventionnel en excès</li>
+      <li><span class="check-ico ico-red">✗</span>Bouteilles plastique & conserves</li>
+      <li><span class="check-ico ico-red">✗</span>Viande avec hormones ajoutées</li>
+    </ul>
+    <h3>🫁 Destructeurs intestinaux</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-red">✗</span>Anti-inflammatoires (ibuprofène) en excès</li>
+      <li><span class="check-ico ico-red">✗</span>Caféine excessive</li>
+      <li><span class="check-ico ico-red">✗</span>Manger tard le soir</li>
+      <li><span class="check-ico ico-red">✗</span>Boissons gazeuses avec les repas</li>
+    </ul>
+  </div>
+</div>
+
+<!-- COMPLÉMENTS -->
+<div id="complements" class="section">
+  <div class="hero">
+    <div class="hero-tag">Stack ciblé</div>
+    <h1>Compléments</h1>
+    <p>Hormones · Intestin · Récupération</p>
+  </div>
+
+  <div class="card">
+    <div class="supp-time">
+      <div class="supp-header">
+        <div class="supp-dot dot-morning"></div>
+        Stack Matin ☀️
+      </div>
+      <span class="supp-pill">Vitamine D3 + K2 (5 000 UI)</span>
+      <span class="supp-pill">Oméga-3 (2–3g EPA/DHA)</span>
+      <span class="supp-pill">Zinc Carnosine 15mg</span>
+      <span class="supp-pill">Complexe B</span>
+    </div>
+
+    <div class="supp-time">
+      <div class="supp-header">
+        <div class="supp-dot dot-gut"></div>
+        Protocole Intestin 🦠
+      </div>
+      <span class="supp-pill">Probiotique sporulé</span>
+      <span class="supp-pill">L-Glutamine 5g à jeun</span>
+      <span class="supp-pill">Enzymes digestives avec repas</span>
+    </div>
+
+    <div class="supp-time">
+      <div class="supp-header">
+        <div class="supp-dot dot-evening"></div>
+        Stack Soir 🌙
+      </div>
+      <span class="supp-pill">Magnésium glycinate 300–400mg</span>
+      <span class="supp-pill">Ashwagandha KSM-66 (cortisol)</span>
+      <span class="supp-pill">Myo-Inositol 2–4g (si SOPK)</span>
+      <span class="supp-pill">Tisane camomille / passiflore</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-tag">Analyses recommandées</div>
+    <h2>Tests à faire</h2>
+    <h3>🧬 Panel hormonal</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-gold">→</span>Estrogènes E1, E2, E3</li>
+      <li><span class="check-ico ico-gold">→</span>Progestérone — jour 21 du cycle</li>
+      <li><span class="check-ico ico-gold">→</span>Testostérone libre & totale</li>
+      <li><span class="check-ico ico-gold">→</span>DHEA-S</li>
+      <li><span class="check-ico ico-gold">→</span>Cortisol (4 points)</li>
+      <li><span class="check-ico ico-gold">→</span>LH & FSH</li>
+    </ul>
+    <h3>🔬 Intestin & métabolisme</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-gold">→</span>GI-MAP (selles)</li>
+      <li><span class="check-ico ico-gold">→</span>Test SIBO (souffle)</li>
+      <li><span class="check-ico ico-gold">→</span>Insuline à jeun + glucose + HbA1c</li>
+      <li><span class="check-ico ico-gold">→</span>Thyroïde : TSH, T3L, T4L, T3 reverse</li>
+    </ul>
+    <h3>💊 Statut nutritionnel</h3>
+    <ul class="check-list">
+      <li><span class="check-ico ico-gold">→</span>Vitamine D3</li>
+      <li><span class="check-ico ico-gold">→</span>Ferritine (réserves fer)</li>
+      <li><span class="check-ico ico-gold">→</span>Magnésium RBC (pas sérum)</li>
+      <li><span class="check-ico ico-gold">→</span>B12 & Folates</li>
+      <li><span class="check-ico ico-gold">→</span>Index oméga-3</li>
+      <li><span class="check-ico ico-gold">→</span>Ratio Zinc/Cuivre</li>
+    </ul>
+  </div>
+</div>
+
+<!-- LIFESTYLE -->
+<div id="lifestyle" class="section">
+  <div class="hero">
+    <div class="hero-tag">Les détails qui font tout</div>
+    <h1>Lifestyle</h1>
+    <p>Les choses dont personne ne parle</p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:var(--gold)">
+    <h3>☀️ Lumière matinale</h3>
+    <p>10 min dehors dans les 30 min après le réveil. Règle le rythme du cortisol, améliore la qualité du sommeil la nuit et régule toutes les hormones. Simple mais non-négociable.</p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:var(--terracotta)">
+    <h3>🧘 Gestion du stress</h3>
+    <p>Le cortisol chronique = stockage de graisse abdominale + chaos hormonal. Pratique quotidienne : cohérence cardiaque, journaling ou 10 min de méditation. <strong>Non-négociable.</strong></p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:#7986CB">
+    <h3>😴 Le sommeil EST le protocole</h3>
+    <p>8h minimum. C'est pendant le sommeil que tu sécrètes l'hormone de croissance, récupères, et régules ta faim (ghréline/leptine). Sans sommeil, l'entraînement et la nutrition servent à moitié.</p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:var(--sage)">
+    <h3>🚫 Éviter les Xénoestrogènes</h3>
+    <p>Ils miment les estrogènes et créent des déséquilibres hormonaux. Éviter : plastiques alimentaires, récipients en plastique chauffés, cosmétiques avec parabènes/phtalates, produits d'entretien chimiques.</p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:var(--blush)">
+    <h3>💆 Soutien lymphatique</h3>
+    <p>Brossage à sec avant la douche. Douche contrastée chaud/froid. Marche régulière. Ce protocole déplace les toxines et réduit drastiquement les ballonnements.</p>
+  </div>
+
+  <div class="lifestyle-item" style="border-left-color:var(--charcoal)">
+    <h3>⚔️ Escrime & récupération</h3>
+    <p>L'escrime est intense (cardio + coordination + jambes + mental). Les jours d'escrime : mange +200 kcal de glucides, hydrate-toi +++, dors 8h, et évite l'entraînement lourd des jambes la veille. Vois ça comme ton cardio fonctionnel de la semaine.</p>
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div id="tracker" class="section">
+  <div class="hero">
+    <div class="hero-tag">Suivi quotidien</div>
+    <h1>Tracker</h1>
+    <p>Coche tes habitudes chaque jour</p>
+  </div>
+
+  <div id="tracker-date" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);margin-bottom:16px;text-align:center;"></div>
+
+  <div class="tracker-day">
+    <h3>
+      <span>💪 Sport</span>
+      <span id="sport-progress" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--sage)">0/3</span>
+    </h3>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Séance d'entraînement faite</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">10 000+ pas</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Stomach Vacuums ×5</span>
+    </div>
+  </div>
+
+  <div class="tracker-day">
+    <h3>
+      <span>🥗 Nutrition</span>
+      <span id="nutri-progress" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--sage)">0/5</span>
+    </h3>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Protéines atteintes (~130g)</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Premier repas dans l'heure du réveil</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Fenêtre fermée avant 20h</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Aliment fermenté (kéfir / kimchi...)</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Pas de snacks ultra-transformés</span>
+    </div>
+  </div>
+
+  <div class="tracker-day">
+    <h3>
+      <span>💊 Compléments</span>
+      <span id="supp-progress" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--sage)">0/3</span>
+    </h3>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Stack matin (D3, Oméga-3, Zinc, B)</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">L-Glutamine à jeun</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">Stack soir (Magnésium, Ashwagandha)</span>
+    </div>
+  </div>
+
+  <div class="tracker-day">
+    <h3>
+      <span>🌿 Lifestyle</span>
+      <span id="life-progress" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--sage)">0/5</span>
+    </h3>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">☀️ 10 min lumière matinale</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">🧘 Cohérence cardiaque / méditation</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">😴 8h de sommeil</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">💧 2L d'eau minimum</span>
+    </div>
+    <div class="habit-check" onclick="toggle(this)">
+      <div class="habit-box"></div>
+      <span class="habit-label">🚿 Brossage lymphatique</span>
+    </div>
+  </div>
+
+  <!-- Score total -->
+  <div class="card" style="margin-top:8px;">
+    <div class="card-tag">Score du jour</div>
+    <h2 id="total-score">0 / 16 habitudes</h2>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="total-bar" style="width:0%"></div>
+    </div>
+    <div class="progress-label">
+      <span>0%</span>
+      <span id="pct-label">0%</span>
+    </div>
+    <p class="note" id="score-msg">Lance-toi ! Commence par cocher tes premières habitudes. 💪</p>
+  </div>
+
+  <button class="btn btn-primary btn-full" onclick="resetTracker()">Réinitialiser le tracker</button>
+</div>
+
+<!-- SUIVI -->
+<div id="suivi" class="section">
+  <div class="hero">
+    <div class="hero-tag">Hebdomadaire</div>
+    <h1>Suivi</h1>
+    <p>Mensurations · Poids · Cycle</p>
+  </div>
+
+  <!-- CYCLE MENSTRUEL -->
+  <div class="card">
+    <div class="card-tag">Cycle menstruel</div>
+    <h2>🌸 Mon cycle</h2>
+
+    <div class="input-group">
+      <label>Date de début de mes dernières règles</label>
+      <input type="date" id="cycle-start" onchange="saveCycleStart(); updateCycleDisplay();">
+    </div>
+    <div class="input-group">
+      <label>Durée moyenne de mon cycle (jours)</label>
+      <input type="number" id="cycle-length" value="28" min="21" max="40" onchange="saveCycleStart(); updateCycleDisplay();">
+    </div>
+
+    <div class="cycle-indicator" id="cycle-display" style="display:none">
+      <h3>Aujourd'hui — phase actuelle</h3>
+      <div id="phase-badge" class="phase-badge"></div>
+      <p id="phase-desc" style="font-size:13px;color:var(--mid);line-height:1.5;margin-bottom:8px;"></p>
+      <p id="cycle-day" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--light-mid);"></p>
+      <p id="next-period" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--terracotta);margin-top:4px;"></p>
+    </div>
+
+    <div class="cycle-phases">
+      <div class="phase-card phase-menstrual">
+        <h4>🔴 Règles (J1–5)</h4>
+        <p>Entraînements doux. Plus de fer, de magnésium. Yoga, marche légère. Écoute ton corps.</p>
+      </div>
+      <div class="phase-card phase-follicular">
+        <h4>🟡 Folliculaire (J6–13)</h4>
+        <p>Énergie montante. Parfait pour les séances intenses et la prise de muscle. Charge !</p>
+      </div>
+      <div class="phase-card phase-ovulation">
+        <h4>🟢 Ovulation (J14–16)</h4>
+        <p>Pic d'énergie et de force. Meilleures performances. Idéal pour l'escrime !</p>
+      </div>
+      <div class="phase-card phase-luteal">
+        <h4>🟣 Lutéale (J17–fin)</h4>
+        <p>Fatigue possible, envies sucrées. Favorise le magnésium, les glucides complexes. Réduis l'intensité si besoin.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAISIE MENSURATIONS -->
+  <div class="card">
+    <div class="card-tag">Nouvelles mesures</div>
+    <h2>📏 Saisir cette semaine</h2>
+    <p class="note" style="margin-bottom:16px;">Mesure toujours le matin à jeun, après les toilettes, debout détendue. Même heure chaque semaine.</p>
+
+    <div class="input-group">
+      <label>Poids (kg)</label>
+      <input type="number" id="inp-poids" placeholder="66.0" step="0.1">
+    </div>
+
+    <div class="measure-grid">
+      <div class="measure-field">
+        <label>Tour de taille (cm)</label>
+        <input type="number" id="inp-taille" placeholder="—" step="0.5">
+      </div>
+      <div class="measure-field">
+        <label>Tour de hanches (cm)</label>
+        <input type="number" id="inp-hanches" placeholder="—" step="0.5">
+      </div>
+      <div class="measure-field">
+        <label>Tour de poitrine (cm)</label>
+        <input type="number" id="inp-poitrine" placeholder="—" step="0.5">
+      </div>
+      <div class="measure-field">
+        <label>Tour de cuisse (cm)</label>
+        <input type="number" id="inp-cuisse" placeholder="—" step="0.5">
+      </div>
+      <div class="measure-field">
+        <label>Tour de bras (cm)</label>
+        <input type="number" id="inp-bras" placeholder="—" step="0.5">
+      </div>
+      <div class="measure-field">
+        <label>Tour de mollet (cm)</label>
+        <input type="number" id="inp-mollet" placeholder="—" step="0.5">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Note / ressenti de la semaine</label>
+      <input type="text" id="inp-note" placeholder="Ex : ventre moins gonflé, belle énergie...">
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="saveMeasure()">Enregistrer cette semaine</button>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="card">
+    <div class="card-tag">Historique</div>
+    <h2 id="history-title">Mon évolution</h2>
+    <div id="history-list">
+      <p style="font-size:14px;color:var(--light-mid);font-style:italic;text-align:center;padding:20px 0;">Aucune mesure enregistrée pour l'instant.</p>
+    </div>
+  </div>
+
+  <!-- STATS RÉSUMÉ -->
+  <div class="card" id="stats-summary" style="display:none">
+    <div class="card-tag">Résumé</div>
+    <h2>Depuis le début</h2>
+    <div class="stats-row" id="delta-stats"></div>
+  </div>
+
+  <!-- SAUVEGARDE -->
+  <div class="card">
+    <div class="card-tag">Sauvegarde locale</div>
+    <h2>💾 Mes données</h2>
+    <p style="font-size:14px;color:var(--mid);margin-bottom:16px;line-height:1.5;">Exporte toutes tes données (mensurations, cycle, tracker) dans un fichier JSON. Garde-le en sécurité pour les réimporter plus tard.</p>
+
+    <button class="btn btn-primary btn-full" onclick="exportData()" style="margin-bottom:10px;">⬇️ Exporter mes données</button>
+
+    <div style="position:relative;">
+      <input type="file" id="import-file" accept=".json" onchange="importData(event)"
+        style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
+      <button class="btn btn-full" style="background:var(--warm-white);border:1.5px dashed var(--border);color:var(--mid);">
+        ⬆️ Importer une sauvegarde
+      </button>
+    </div>
+
+    <p id="import-status" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--sage);text-align:center;margin-top:10px;display:none;"></p>
+  </div>
+</div>
+
+<script>
+  // ── Navigation ──────────────────────────────────────────────
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleDay(day) {
+    const detail = document.getElementById('detail-' + day);
+    const row = detail.previousElementSibling;
+    detail.classList.toggle('open');
+    row.classList.toggle('active-day');
+  }
+
+  // ── Date ────────────────────────────────────────────────────
+  const today = new Date();
+  const todayKey = today.toISOString().split('T')[0];
+  const todayStr = today.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
+  const el = document.getElementById('tracker-date');
+  if (el) el.textContent = todayStr.charAt(0).toUpperCase() + todayStr.slice(1);
+
+  // ── LocalStorage tracker ────────────────────────────────────
+  const STORAGE_KEY = 'tracker_' + todayKey;
+
+  function saveState() {
+    const state = [];
+    document.querySelectorAll('.habit-check').forEach(item => {
+      state.push(item.querySelector('.habit-box').classList.contains('checked'));
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('tracker_'));
+    keys.sort().reverse().slice(7).forEach(k => localStorage.removeItem(k));
+  }
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const state = JSON.parse(saved);
+    document.querySelectorAll('.habit-check').forEach((item, i) => {
+      const box = item.querySelector('.habit-box');
+      if (state[i]) { box.classList.add('checked'); box.textContent = '✓'; }
+    });
+  }
+
+  function toggle(el) {
+    const box = el.querySelector('.habit-box');
+    box.classList.toggle('checked');
+    box.textContent = box.classList.contains('checked') ? '✓' : '';
+    updateScore();
+    saveState();
+  }
+
+  function updateScore() {
+    let total = 0, max = 16;
+    document.querySelectorAll('.tracker-day').forEach(td => {
+      const checks = td.querySelectorAll('.habit-box.checked').length;
+      const all = td.querySelectorAll('.habit-box').length;
+      const progressEl = td.querySelector('h3 span:last-child');
+      if (progressEl) progressEl.textContent = checks + '/' + all;
+      total += checks;
+    });
+    const pct = Math.round((total / max) * 100);
+    document.getElementById('total-score').textContent = total + ' / ' + max + ' habitudes';
+    document.getElementById('total-bar').style.width = pct + '%';
+    document.getElementById('pct-label').textContent = pct + '%';
+    const msgs = [
+      [0,30,"Lance-toi ! Commence par cocher tes premières habitudes. 💪"],
+      [31,60,"Beau départ ! Continue sur ta lancée. 🌱"],
+      [61,80,"Excellente journée ! Tu construis de vraies habitudes. 🔥"],
+      [81,100,"Journée parfaite ! Tu es inarrêtable. ⚔️✨"]
+    ];
+    const msg = msgs.find(([min,max]) => pct >= min && pct <= max);
+    if (msg) document.getElementById('score-msg').textContent = msg[2];
+  }
+
+  function resetTracker() {
+    if (!confirm("Remettre le tracker à zéro pour aujourd'hui ?")) return;
+    document.querySelectorAll('.habit-box').forEach(b => { b.classList.remove('checked'); b.textContent = ''; });
+    updateScore(); saveState();
+  }
+
+  // ── CYCLE ────────────────────────────────────────────────────
+  function saveCycleStart() {
+    const d = document.getElementById('cycle-start').value;
+    const l = document.getElementById('cycle-length').value;
+    if (d) localStorage.setItem('cycle_start', d);
+    if (l) localStorage.setItem('cycle_length', l);
+  }
+
+  function updateCycleDisplay() {
+    const startStr = localStorage.getItem('cycle_start') || document.getElementById('cycle-start').value;
+    const cycleLen = parseInt(localStorage.getItem('cycle_length') || document.getElementById('cycle-length').value || '28');
+    if (!startStr) return;
+
+    const start = new Date(startStr);
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    start.setHours(0,0,0,0);
+
+    let dayOfCycle = Math.floor((now - start) / 86400000) + 1;
+    // Si le cycle est dépassé, on recalcule
+    while (dayOfCycle > cycleLen) dayOfCycle -= cycleLen;
+    while (dayOfCycle < 1) dayOfCycle += cycleLen;
+
+    // Prochaines règles
+    let daysUntilNext = cycleLen - dayOfCycle + 1;
+    const nextPeriod = new Date(now);
+    nextPeriod.setDate(nextPeriod.getDate() + daysUntilNext);
+    const nextStr = nextPeriod.toLocaleDateString('fr-FR', {day:'numeric', month:'long'});
+
+    // Phase
+    let phase, badge, badgeClass, desc;
+    if (dayOfCycle <= 5) {
+      phase = '🔴 Règles'; badgeClass = 'pb-menstrual';
+      desc = 'Période de repos et régénération. Privilégie les entraînements doux (yoga, marche). Augmente le fer et le magnésium. Écoute ton corps sans culpabiliser.';
+    } else if (dayOfCycle <= 13) {
+      phase = '🟡 Phase folliculaire'; badgeClass = 'pb-follicular';
+      desc = 'Énergie en hausse ! C\'est le meilleur moment pour les séances intenses, la prise de muscle et les nouvelles performances. Profites-en.';
+    } else if (dayOfCycle <= 16) {
+      phase = '🟢 Ovulation'; badgeClass = 'pb-ovulation';
+      desc = 'Pic de force et d\'énergie. Tu es au top de tes performances. Parfait pour l\'escrime et les records personnels à la salle.';
+    } else {
+      phase = '🟣 Phase lutéale'; badgeClass = 'pb-luteal';
+      desc = 'L\'énergie peut baisser progressivement. Envies de sucré ? Normal. Mise sur le magnésium, les glucides complexes et les séances modérées si tu te sens fatiguée.';
+    }
+
+    const display = document.getElementById('cycle-display');
+    display.style.display = 'block';
+    document.getElementById('phase-badge').textContent = phase;
+    document.getElementById('phase-badge').className = 'phase-badge ' + badgeClass;
+    document.getElementById('phase-desc').textContent = desc;
+    document.getElementById('cycle-day').textContent = 'Jour ' + dayOfCycle + ' sur ' + cycleLen;
+    document.getElementById('next-period').textContent = daysUntilNext <= 1 ? '🔴 Tes règles arrivent demain (ou aujourd\'hui)' : '→ Prochaines règles dans ' + daysUntilNext + ' jours (' + nextStr + ')';
+  }
+
+  // ── MENSURATIONS ─────────────────────────────────────────────
+  function getMeasures() {
+    return JSON.parse(localStorage.getItem('measures') || '[]');
+  }
+
+  function saveMeasure() {
+    const poids   = document.getElementById('inp-poids').value;
+    const taille  = document.getElementById('inp-taille').value;
+    const hanches = document.getElementById('inp-hanches').value;
+    const poitrine= document.getElementById('inp-poitrine').value;
+    const cuisse  = document.getElementById('inp-cuisse').value;
+    const bras    = document.getElementById('inp-bras').value;
+    const mollet  = document.getElementById('inp-mollet').value;
+    const note    = document.getElementById('inp-note').value;
+
+    if (!poids && !taille && !hanches) {
+      alert('Saisis au moins ton poids ou une mensuration.');
+      return;
+    }
+
+    const entry = {
+      date: todayKey,
+      dateLabel: today.toLocaleDateString('fr-FR', {day:'numeric', month:'short', year:'numeric'}),
+      poids, taille, hanches, poitrine, cuisse, bras, mollet, note
+    };
+
+    const measures = getMeasures();
+    // Remplace si même semaine
+    const thisWeek = getWeekKey(today);
+    const idx = measures.findIndex(m => getWeekKey(new Date(m.date)) === thisWeek);
+    if (idx >= 0) {
+      if (!confirm('Tu as déjà une entrée cette semaine. Remplacer ?')) return;
+      measures[idx] = entry;
+    } else {
+      measures.unshift(entry);
+    }
+
+    localStorage.setItem('measures', JSON.stringify(measures));
+    renderHistory();
+
+    // Reset form
+    ['inp-poids','inp-taille','inp-hanches','inp-poitrine','inp-cuisse','inp-bras','inp-mollet','inp-note']
+      .forEach(id => document.getElementById(id).value = '');
+
+    showToast('✓ Mesures enregistrées !');
+  }
+
+  function getWeekKey(d) {
+    const tmp = new Date(d);
+    tmp.setHours(0,0,0,0);
+    tmp.setDate(tmp.getDate() - tmp.getDay() + 1);
+    return tmp.toISOString().split('T')[0];
+  }
+
+  function deleteMeasure(index) {
+    if (!confirm('Supprimer cette entrée ?')) return;
+    const measures = getMeasures();
+    measures.splice(index, 1);
+    localStorage.setItem('measures', JSON.stringify(measures));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const measures = getMeasures();
+    const list = document.getElementById('history-list');
+
+    if (measures.length === 0) {
+      list.innerHTML = '<p style="font-size:14px;color:var(--light-mid);font-style:italic;text-align:center;padding:20px 0;">Aucune mesure enregistrée pour l\'instant.</p>';
+      document.getElementById('stats-summary').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('history-title').textContent = 'Mon évolution (' + measures.length + ' semaine' + (measures.length > 1 ? 's' : '') + ')';
+
+    list.innerHTML = measures.map((m, i) => {
+      const prev = measures[i + 1];
+      const poidsChip = m.poids ? buildChip('⚖️ ' + m.poids + ' kg', prev && prev.poids ? trend(parseFloat(m.poids), parseFloat(prev.poids)) : '') : '';
+      const tailleChip = m.taille ? buildChip('Taille ' + m.taille + ' cm', '') : '';
+      const hanchesChip = m.hanches ? buildChip('Hanches ' + m.hanches + ' cm', '') : '';
+      const poitrineChip = m.poitrine ? buildChip('Poitrine ' + m.poitrine + ' cm', '') : '';
+      const cuisseChip = m.cuisse ? buildChip('Cuisse ' + m.cuisse + ' cm', '') : '';
+      const brasChip = m.bras ? buildChip('Bras ' + m.bras + ' cm', '') : '';
+      const molletChip = m.mollet ? buildChip('Mollet ' + m.mollet + ' cm', '') : '';
+      const noteHtml = m.note ? `<p style="font-size:12px;color:var(--mid);font-style:italic;margin-top:6px;text-align:right;">"${m.note}"</p>` : '';
+
+      return `<div class="history-entry">
+        <span class="history-date">${m.dateLabel}</span>
+        <div style="flex:1">
+          <div class="history-data">${poidsChip}${tailleChip}${hanchesChip}${poitrineChip}${cuisseChip}${brasChip}${molletChip}</div>
+          ${noteHtml}
+        </div>
+        <button class="del-btn" onclick="deleteMeasure(${i})">✕</button>
+      </div>`;
+    }).join('');
+
+    // Stats delta
+    if (measures.length >= 2) {
+      const first = measures[measures.length - 1];
+      const last = measures[0];
+      const summary = document.getElementById('stats-summary');
+      const deltaStats = document.getElementById('delta-stats');
+      summary.style.display = 'block';
+
+      const items = [
+        { label: 'Poids', a: first.poids, b: last.poids, unit: 'kg', lower: true },
+        { label: 'Taille', a: first.taille, b: last.taille, unit: 'cm', lower: true },
+        { label: 'Hanches', a: first.hanches, b: last.hanches, unit: 'cm', lower: false },
+      ].filter(x => x.a && x.b);
+
+      deltaStats.innerHTML = items.map(item => {
+        const diff = (parseFloat(item.b) - parseFloat(item.a)).toFixed(1);
+        const sign = diff > 0 ? '+' : '';
+        const good = item.lower ? diff < 0 : diff > 0;
+        const color = diff == 0 ? 'var(--mid)' : good ? 'var(--sage)' : 'var(--terracotta)';
+        return `<div class="stat-card">
+          <div class="stat-val" style="color:${color}">${sign}${diff} ${item.unit}</div>
+          <div class="stat-label">${item.label}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  function buildChip(text, trendIcon) {
+    return `<span class="history-chip">${text} ${trendIcon}</span>`;
+  }
+
+  function trend(current, prev) {
+    if (current < prev) return '<span class="trend-down">↓</span>';
+    if (current > prev) return '<span class="trend-up">↑</span>';
+    return '<span class="trend-eq">→</span>';
+  }
+
+  // ── EXPORT / IMPORT ──────────────────────────────────────────
+  function exportData() {
+    const data = {};
+    // Récupère tout le localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      data[key] = localStorage.getItem(key);
+    }
+    if (Object.keys(data).length === 0) {
+      alert('Aucune donnée à exporter pour l\'instant.');
+      return;
+    }
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const dateStr = new Date().toISOString().split('T')[0];
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mon-programme-sauvegarde-' + dateStr + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✓ Sauvegarde téléchargée !');
+  }
+
+  function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (typeof data !== 'object') throw new Error();
+        if (!confirm('Importer cette sauvegarde ? Tes données actuelles seront remplacées.')) return;
+        localStorage.clear();
+        for (const key in data) {
+          localStorage.setItem(key, data[key]);
+        }
+        // Réafficher
+        const cs = localStorage.getItem('cycle_start');
+        const cl = localStorage.getItem('cycle_length');
+        if (cs) document.getElementById('cycle-start').value = cs;
+        if (cl) document.getElementById('cycle-length').value = cl;
+        if (cs) updateCycleDisplay();
+        renderHistory();
+        loadState();
+        updateScore();
+        const status = document.getElementById('import-status');
+        status.style.display = 'block';
+        status.textContent = '✓ Données importées avec succès !';
+        setTimeout(() => status.style.display = 'none', 3000);
+      } catch {
+        alert('Fichier invalide. Assure-toi d\'utiliser une sauvegarde exportée depuis cette app.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2A2A2A;color:#F5F0E8;padding:10px 20px;border-radius:30px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:0.08em;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.style.opacity = '1', 50);
+    setTimeout(() => t.style.opacity = '0', 2500);
+    setTimeout(() => t.remove(), 3000);
+  }
+
+  // ── Init ─────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    updateScore();
+
+    // BMI needle
+    setTimeout(() => {
+      const needle = document.getElementById('bmi-needle');
+      if (needle) needle.style.left = '38%';
+    }, 300);
+
+    // Restore cycle inputs
+    const cs = localStorage.getItem('cycle_start');
+    const cl = localStorage.getItem('cycle_length');
+    if (cs) document.getElementById('cycle-start').value = cs;
+    if (cl) document.getElementById('cycle-length').value = cl;
+    if (cs) updateCycleDisplay();
+
+    // Render measures history
+    renderHistory();
+
+    // Toast
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2A2A2A;color:#F5F0E8;padding:10px 20px;border-radius:30px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:0.08em;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;';
+    banner.textContent = '✓ Tes données sont sauvegardées automatiquement';
+    document.body.appendChild(banner);
+    setTimeout(() => banner.style.opacity = '1', 100);
+    setTimeout(() => banner.style.opacity = '0', 3000);
+    setTimeout(() => banner.remove(), 3500);
+  });
+</script>
+</body>
+</html>
